@@ -1,0 +1,42 @@
+.WebCombWindow_Container {
+    height: 580px;
+    width: 760px;
+    background-color: #1f1f1f;
+    color: white;
+    /* margin: auto; */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 13px;
+    
+}
+body{
+    background: rgb(11, 9, 15);
+}
+
+.WebCombWindow_Holder {
+
+    background-color: #151317;
+    height: 91%;
+    width: 95%;
+    position: relative;
+    margin: auto;
+    top: 50%;
+    border-radius: 6px;
+    transform: translateY(-50%);
+    overflow: scroll;
+    
+    
+  
+}
+.WebComb_ButtonToolbar_Holder {
+
+    position: absolute;
+    top: -11px;
+    width: 100%;
+    margin-top: 5px;
+    display: flex;
+    place-content: center;
+  
+}

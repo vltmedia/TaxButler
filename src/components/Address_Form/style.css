@@ -1,0 +1,72 @@
+.Address_Form_Form_Container {
+    background-color: #1f1f1f;
+    align-items: start;
+    border: 5px dashed #14699261;
+  }
+  .Address_Form_label {
+    color: white;
+    text-align: start;
+    align-self: start;
+    width: 100%;
+    text-transform: capitalize;
+    font-weight: bold;
+  }
+  
+  .Address_Form_Form_Container {
+    align-items: center;
+    width: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .Address_Form_Form_Header {
+    color: white;
+    width: 100%;
+    text-transform: capitalize;
+  }
+
+  .Address_Form_inputholder {
+    text-align: start;
+    width: 50%;
+    margin: auto;
+    margin-top: 8px;
+    display: flow-root;
+  }
+  
+  .Address_ForminputKey{
+    margin: auto;
+    margin-top: 1px;
+    width: 100%;
+  }
+
+  .Address_Form_valueholder {
+    color: #1b9bcc;
+    text-align: start;
+    width: 50%;
+    margin: auto;
+    margin-top: 8px;
+    display: flow-root;
+  }
+  
+  .Address_FormvalueKey{
+    color: #1b9bcc;
+    margin: auto;
+    margin-top: 1px;
+    width: 100%;
+  }
+
+  .Address_Form_value{
+    color: #1b9bcc;
+    margin: auto;
+    margin-top: 1px;
+    width: 100%;
+  }
+
+  .Address_Form_submitbutton {
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 3em;
+    width: 50%;
+  }
+  
+  

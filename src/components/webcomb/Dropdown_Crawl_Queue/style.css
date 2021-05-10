@@ -1,0 +1,69 @@
+.Crawl_Queue_Form_Container {
+    /* background-color: #1f1f1f; */
+    align-items: start;
+  }
+  .Crawl_Queue_label {
+    color: white;
+    text-align: start;
+    align-self: start;
+    width: 100%;
+    text-transform: capitalize;
+    font-weight: bold;
+  }
+  
+  .Crawl_Queue_Form_Container {
+    align-items: center;
+    width: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .Crawl_Queue_Form_Header {
+    color: white;
+    width: 100%;
+    text-transform: capitalize;
+  }
+
+  .Crawl_Queue_DropDownForm_Header {
+    color: white;
+    width: 100%;
+    text-transform: capitalize;
+    font-size: 14px;
+  }
+
+  .Crawl_Queue_inputholder {
+  
+  }
+  
+  .Crawl_QueueinputKey{
+    margin: auto;
+    margin-top: 1px;
+    width: 100%;
+  }
+
+  .Crawl_Queue_valueholder {
+    color: #1b9bcc;
+    text-align: start;
+    width: 50%;
+    margin: auto;
+    margin-top: 8px;
+    display: flow-root;
+  }
+  
+  .Crawl_QueuevalueKey{
+    color: #1b9bcc;
+    margin: auto;
+    margin-top: 1px;
+    width: 100%;
+  }
+
+
+
+  .Crawl_Queue_submitbutton {
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 3em;
+    width: 50%;
+  }
+  
+  
