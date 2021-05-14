@@ -29,6 +29,7 @@ class TaxButlerMainWindow extends React.Component {
     this.SetCategories = this.SetCategories.bind(this);
     this.SetCategoriesQuiet = this.SetCategoriesQuiet.bind(this);
     this.SetCategoriesRegular = this.SetCategoriesRegular.bind(this);
+    this.CreateCSV = this.CreateCSV.bind(this);
     this.LoadDownloadPage = this.LoadDownloadPage.bind(this);
     this.LoadMainPage = this.LoadMainPage.bind(this);
     this.LoadHelpPage = this.LoadHelpPage.bind(this);
@@ -1850,6 +1851,45 @@ class TaxButlerMainWindow extends React.Component {
     ];
     this.PCHardDrive = ['SSD', 'HDD', '3.5', '2.5', 'SDSSA'];
   }
+
+  CreateCSV(orders) {
+    var headers = 'Date,Items,Category,OrderId,Price,User,Vendor,Links\n';
+    var entries = [];
+    for (var i = 0; i < orders.length - 1; i++) {
+      var order = orders[i];
+      var itemnames = [];
+      var itemLinks = [];
+      console.log('order', order.Items);
+      for (var item = 0; item < order.Items.length; item++) {
+        console.log(order.Items[item]);
+        var length = 100;
+        var Linkk = order.Items[item].Link;
+        var titlee = order.Items[item].Title.replace(',', '-').substring(
+          0,
+          length
+        );
+        var cleanedtitle = titlee.replace(',', '-');
+        itemnames.push(cleanedtitle.replace(',', '-'));
+        itemLinks.push(Linkk);
+      }
+      var entry = [
+        order.Date.replace(',', '-'),
+        itemnames.join(' | ').replace(',', '-'),
+        order.Category.replace(',', '-'),
+        order.OrderId.replace(',', '-'),
+        order.Price.replace(',', '-'),
+        order.User.replace(',', '-'),
+        order.Vendor.replace(',', '-'),
+        itemLinks.join(' | ').replace(',', '-')
+      ];
+      var entrystring = entry.join(',');
+      entries.push(entrystring);
+    }
+    var entrystringout = entries.join('\n');
+    headers += entrystringout;
+    return headers;
+  }
+
   componentDidMount() {
     browser.storage.local.get('taxbutler').then(result => {
       console.log(result);
@@ -1872,10 +1912,13 @@ class TaxButlerMainWindow extends React.Component {
               taxbutlerAmazon: amazon,
               amazoncount: amazon.taxbutleramazon.Orders.length
             });
+            // this.CreateCSV(amazon.taxbutleramazon.Orders);
+
             console.log(amazon);
           } catch {
             this.setState({ taxbutlerAmazon: amazon });
           }
+
           this.LoadMainPage();
           // console.log(JSON.parse(result));
         });
@@ -1992,8 +2035,10 @@ class TaxButlerMainWindow extends React.Component {
   DownloadAmazonJson() {
     browser.storage.local.get('taxbutleramazon').then(amazon => {
       this.setState({ taxbutlerAmazon: amazon });
+      var csvfile = this.CreateCSV(amazon.taxbutleramazon.Orders);
       console.log(amazon);
       // console.log(JSON.parse(result));
+
       var a = document.createElement('a');
       var file = new Blob([JSON.stringify(amazon.taxbutleramazon, null, 2)], {
         type: 'text/plain'
@@ -2001,6 +2046,14 @@ class TaxButlerMainWindow extends React.Component {
       a.href = URL.createObjectURL(file);
       a.download = 'TaxButler-AmazonOrders.json';
       a.click();
+
+      var csvv = document.createElement('a');
+      var filecsv = new Blob([csvfile], {
+        type: 'text/plain'
+      });
+      csvv.href = URL.createObjectURL(filecsv);
+      csvv.download = 'TaxButler-AmazonOrders.csv';
+      csvv.click();
     });
   }
 
@@ -2025,6 +2078,7 @@ class TaxButlerMainWindow extends React.Component {
       //   }
 
       // }
+      var csvfile = this.CreateCSV(paypal.taxbutlerpaypal.Orders);
       console.log(paypal);
       // console.log(JSON.parse(result));
       var a = document.createElement('a');
@@ -2034,6 +2088,14 @@ class TaxButlerMainWindow extends React.Component {
       a.href = URL.createObjectURL(file);
       a.download = 'TaxButler-PaypalOrders.json';
       a.click();
+
+      var csvv = document.createElement('a');
+      var filecsv = new Blob([csvfile], {
+        type: 'text/plain'
+      });
+      csvv.href = URL.createObjectURL(filecsv);
+      csvv.download = 'TaxButler-PaypalOrders.csv';
+      csvv.click();
     });
   }
 
@@ -2050,6 +2112,7 @@ class TaxButlerMainWindow extends React.Component {
         this.state.taxbutlerPaypal.taxbutlerpaypal.Orders[i]
       );
     }
+    var csvfile = this.CreateCSV(OutOrders.Orders);
 
     // console.log(JSON.parse(result));
     var a = document.createElement('a');
@@ -2059,6 +2122,14 @@ class TaxButlerMainWindow extends React.Component {
     a.href = URL.createObjectURL(file);
     a.download = 'TaxButler-CombinedOrders.json';
     a.click();
+
+    var csvv = document.createElement('a');
+    var filecsv = new Blob([csvfile], {
+      type: 'text/plain'
+    });
+    csvv.href = URL.createObjectURL(filecsv);
+    csvv.download = 'TaxButler-PaypalOrders.csv';
+    csvv.click();
   }
   SetPassword(e) {
     this.setState({ password: e.target.value });
@@ -2152,26 +2223,22 @@ class TaxButlerMainWindow extends React.Component {
     });
   }
 
-  LoadHelpPage(){
-    browser.tabs.executeScript({
-      file: './launchHelp.js'
-    })
+  LoadHelpPage() {
+    browser.tabs
+      .executeScript({
+        file: './launchHelp.js'
+      })
       .then(() => {
-       
         console.log('launchHelp  ');
-        // setTimeout(() => { 
+        // setTimeout(() => {
         //   // Crawler_TargetLoop();
-        
+
         //   // ProductPageHandler();
         // }, 4000);
-      
-       
-       
-      
 
-        // console.log(res); 
+        // console.log(res);
       })
-      .catch(err =>{
+      .catch(err => {
         console.log(err.toString());
         console.log('launchHelp | FAIL');
       });
@@ -2188,7 +2255,10 @@ class TaxButlerMainWindow extends React.Component {
       <div>
         <div className="container">
           <div className="ButtonBar-container">
-            <div onClick={this.LoadMainPage} className="ButtonBar-Button-Home ButtonBar-Button">
+            <div
+              onClick={this.LoadMainPage}
+              className="ButtonBar-Button-Home ButtonBar-Button"
+            >
               <FA_HomeIcon />
             </div>
 

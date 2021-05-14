@@ -1,14 +1,14 @@
 
 
-class PaypalOrdersCrawler {
+class AmazonOrdersCrawler {
     
     constructor(props){
+        // this.LocalStorageCacheKey = this.LocalStorageCacheKey;
         this.LocalStorageCacheKey = "taxbutler";
         this.SetTaxButlerCache = this.SetTaxButlerCache.bind(this);
 
         this.chosenPieces = [];
         this.chosenPrices = [];
-        this.TransactionBoxes = [];
         this.Preloaded = false;
         this.SkipOrder = false;
         this.PCPart = ["Windows", "USB", "Mac", "DRAM", "DDR4", "Noctua", "Fan", "Processor", "Motherboard", "LGA1", "HDMI", "Raspberry", "Breadboard", "Cable", "Arduino", "Threaded", "Brass", "Solder", "OLED"
@@ -23,7 +23,6 @@ class PaypalOrdersCrawler {
         this.ConvenienceStore = ["7-Eleven", "FamilyMart", "Lawson (store)", "Circle K", "Ministop", "ParknShop", "Big Bazaar", "Spencer's Retail", "Hypercity", "Reliance Fresh", "Spar (retailer)", "More (store)", "DMart", "Alfamart", "Bright Store (page does not exist)", "Ceriamart (page does not exist)", "Indomaret", "Daily Yamazaki", "Poplar (convenience store)", "Seicomart (page does not exist)", "Mynews.com", "Kedai Rakyat 1Malaysia", "Mydin", "CU (store)", "Carrefour", "Tesco", "GS25", "Hi-Life (retailer) (page does not exist)", "zh", "OK Mart (page does not exist)", "Tesco Lotus", "Fresh Mart", "Big C", "108 Shop", "Jiffy (convenience store)", "Ampm", "Alepa", "S Group", "K-citymarket", "8 \u00c3\u00a0 Huit", "CBA (food retail)", "Centra", "Republic of Ireland", "Northern Ireland", "Albert Heijn", "DekaMarkt", "SPAR", "Servex", "Railway stations in the Netherlands", "Deli de Luca", "Norway", "Narvesen", "Latvia", "Lithuania", "Reitan Group", "R-kioski", "Finland", "Estonia", "Pressbyr\u00c3\u00a5n", "Sweden", "Freshmarket", "Groszek", "Ma\u00c5\u201apka Express", "Polomarket", "Spo\u00c5\u201aem", "\u00c5\u00bbabka (Convenience store)", "Czech Republic", "Dia (supermarket chain)", "El Corte Ingl\u00c3\u00a9s", "Coop (Switzerland)", "Denner (supermarkets)", "Best-One", "Bestway", "Budgens", "Co-op Food", "Costcutter", "David Sands", "Happy Shopper", "Kwik Save", "L&F Jones", "Little Waitrose", "Londis (United Kingdom)", "M Local", "Mace (shop)", "Martin McColl", "Scotmid", "Scotland", "Nisa (retailer)", "One Stop (Tesco)", "Tesco plc", "Premier Stores", "Sainsbury's Local", "Bells Stores", "Sainsbury's", "Tesco Express", "Becker's", "Alimentation Couche-Tard", "Irving Oil", "Needs Convenience", "OLCO Petroleum Group", "On the Run (convenience store)", "Exxon", "Mobil", "Esso", "Pioneer Energy", "Farmacias Guadalajara", "OXXO", "Super City (store)", "North Little Rock, Arkansas", "Shell Oil Company", "Valero Energy Corporation", "Phillips 66", "West Memphis, Arkansas", "Harrisburg, Arkansas", "El Dorado, Arkansas", "La Palma, California", "ARCO", "Chevron Corporation", "San Ramon, California", "Roseville, California", "Loaf 'N Jug", "Pueblo, Colorado", "Kroger", "Gate Petroleum (page does not exist)", "RaceTrac", "Atlanta", "Stuckey's", "ABC Stores (Hawaii)", "Honolulu", "Aloha Petroleum", "Par Pacific Holdings", "Albertsons, Inc.", "Boise, Idaho", "Fast Eddy's", "Meridian, Idaho", "Roady's Truck Stops", "New Plymouth, Idaho", "Gardner, Illinois", "Huck's Food & Fuel", "Carmi, Illinois", "Jewel (supermarket)", "Itasca, Illinois", "Road Ranger", "Rockford, Illinois", "MotoMart (page does not exist)", "Martin's Super Markets", "South Bend, Indiana", "Casey's General Stores", "Ankeny, Iowa", "Kum & Go", "Kwik Shop", "Hutchinson, Kansas", "Minit Mart Foods Inc.", "Bowling Green, Kentucky", "Thorntons Inc.", "Louisville, Kentucky", "La Plata, Maryland", "High's Dairy Store", "Hanover, Maryland", "Royal Farms", "Baltimore", "Waltham, Massachusetts", "Cumberland Farms", "Framingham, Massachusetts", "Tedeschi Food Shops", "Bear Lake, MI", "Meijer", "Grand Rapids", "CHS Inc.", "Inver Grove Heights, Minnesota", "Holiday Stationstores", "Bloomington, Minnesota", "SuperAmerica", "Jr. Food Mart", "MFA Oil", "Town Pump", "Terrible Herbst", "QuickChek", "Allsup's", "Byrne Dairy", "Syracuse, New York", "Dairy Barn", "East Northport, New York", "NOCO Energy Corporation", "Tonawanda (town), New York", "Stewart's Shops", "The Pantry", "Cary, North Carolina", "Petro Express", "VPS Convenience", "Convenient Food Mart", "Mentor, Ohio", "Toledo, Ohio", "Speedway LLC", "Enon, Ohio", "Marathon Petroleum", "Hess Corporation", "TravelCenters of America", "Westlake, Ohio", "Brecksville, Ohio", "United Dairy Farmers", "Love's Travel Stops & Country Stores", "Oklahoma City", "Stillwater, Oklahoma", "QuikTrip", "Dari Mart", "Junction City, Oregon", "Plaid Pantry", "Twin Tiers", "A-Plus", "Philadelphia", "Sunoco", "Acme Markets", "Malvern, Pennsylvania", "GetGo", "Pittsburgh, Pennsylvania", "Giant Eagle", "United Refining Company", "Warren, Pennsylvania", "Lewistown, Pennsylvania", "Rutter's", "York, Pennsylvania", "Sheetz", "Altoona, Pennsylvania", "Tom's Convenience Store", "Turkey Hill Minit Markets", "Lancaster, Pennsylvania", "Wawa Inc.", "Empresas Copec", "Brentwood, Tennessee", "Pilot Flying J", "Knoxville, Tennessee", "Pilot Corp.", "Weigel's", "Dallas", "Army and Air Force Exchange Service", "Buc-ee's", "Lake Jackson, Texas", "Corner Store", "San Antonio", "Irving, Texas", "Texarkana, Texas", "Stripes Convenience Stores", "Corpus Christi, Texas", "Perkinsville, Vermont", "Saint Albans, Vermont", "Mount Holly, Virginia", "GPM Investments", "Richmond, Virginia", "Farm Fresh Food & Pharmacy", "Virginia Beach, Virginia", "Go-Mart", "West Virginia", "Virginia", "Kentucky", "Kwik Trip", "La Crosse, Wisconsin", "PDQ Food Stores", "Coles Express", "NewsLink", "NightOwl Convenience Stores", "Ampol", "IGA (supermarkets)", "Daily Stop", "Jacksons Stores", "Local Plus", "Mac's Convenience Stores", "Mills Group Ltd", "Shreveport, Louisiana", "Somerfield", "Town & Country Food Stores", "Ugo (store)", "Poundstretcher", "Uni-Mart", "UtoteM", "Convenience shop", "Akwa Group", "Sasol", "759 Store", "Emart", "Relay (shop)", "Storyway", "China Resources Vanguard", "All Day Convenience Store", "Pertamina", "Singapore Petroleum Company", "Co.op Food (page does not exist)", "NTUC FairPrice", "Petronas", "Royal Dutch Shell", "Caltex", "Tops Supermarket", "Buy the Way", "BP Connect", "Circle K Sunkus", "Bargain Booze", "Londis (Ireland)", "McColl's", "Waitrose", "Opencor", "Billa (supermarket)", "Carrefour Express", "Dixy", "Eurocash", "Magnit", "Piotr i Pawe\u00c5\u201a", "Pyaterochka", "Ahold Delhaize", "Valora (company)", "Carrefour City", "Franprix", "March\u00c3\u00a9 Plus", "Migros", "Monoprix", "Groupe Casino", "Morrisons M Local", "Provi-Soir", "Quickie Convenience Stores", "Soriana", "ABC Stores (convenience store)", "Amazon Go", "Tesoro Corporation", "Giant Industries", "USA Gasoline", "EG Group", "Quik Stop", "Smith's Food and Drug", "Tom Thumb Food Stores", "Global Partners", "Village Pantry", "Jr. Food Stores", "Murphy USA", "Clark Brands", "Quality Dairy Company", "Wawa (company)", "CST Brands", "Getty Oil", "White Hen Pantry", "Gull Petroleum", "Cymbal manufacturers"];
         this.SuperStore = ["Auchan", "Babies \"R\" Us", "Barnes & Noble", "Best Buy", "Blockbuster Video", "Borders Group", "Bricorama", "Cabela's", "Carrefour", "Castorama", "Conforama", "Cora (hypermarket)", "Costco", "Darty", "Decathlon", "E.Leclerc", "Fnac", "Galeries Lafayette", "Geoffrey's Toy Box", "Toys R Us", "Hipercor", "The Home Depot", "IKEA", "Kaufland", "Kmall24", "Kmart", "Sears Holdings Corporation", "Sears", "Leroy Merlin", "Norauto", "OBI (store)", "Office 1", "Office Depot", "PetSmart", "PriceSmart", "Real (hypermarket)", "Metro AG", "Sephora", "Staples Inc.", "Target Corporation", "Tesco", "Tower Records", "Toys \"R\" Us", "Walmart", "Sam's Club", "Big W", "Bing Lee", "Bunnings Warehouse", "Harvey Norman", "JB Hi-Fi", "Kmart Australia", "Mitre 10", "Officeworks", "Supercheap Auto", "Target (Australia)", "The Good Guys (Australian company)", "Agora Super Stores", "The Brick", "Canadian Tire", "Chapters (bookstore)", "Dollarama", "Food Basics", "Giant Tiger", "Home Outfitters", "HomeSense", "The Hudson's Bay Company", "Indigo Books and Music", "Jean Coutu Group", "Jysk (store)", "Lawtons Drugs", "La-Z-Boy", "Loblaws", "Loblaw Companies", "Real Canadian Superstore", "Shoppers Drug Mart", "London Drugs", "Mastermind Toys", "Metro Inc.", "Penningtons", "Rona (company)", "Sears Canada", "Sobeys", "Sport Chek", "Staples (Canada)", "Target Canada", "China Resources", "PARKnSHOP", "3 Suisses", "Brico Depot", "Bricomarch\u00c3\u00a9", "Intermarch\u00c3\u00a9", "Celio (retailer)", "Decathlon (retailer)", "G\u00c3\u00a9ant Casino", "Groupe Casino", "Habitat (retailer)", "Hygena", "Hyper U", "Intersport", "Jean Delatour", "Monoprix", "Mr Bricolage", "MS Mode", "Groupe Saint-Gobain", "Printemps", "La Redoute", "Saint Maclou", "Soho", "Big Bazaar", "Reliance Industries", "Easyday", "Giant Hypermarket", "Ikea", "More (store)", "Amazon (company)", "Namdhari's Fresh", "Reliance Retail", "Saravana Stores", "Spencer's Retail", "\u00c3\u2020ON", "Hero Supermarket", "LuLu Hypermarket", "CT Corp", "Matahari Hypermart", "BigC", "Makro", "Coop Obs!", "Mitre 10 (New Zealand)", "Pak'nSave", "Imtiaz Super Market", "City Supermarket, Inc.", "SM Hypermarket", "Landers (store) (page does not exist)", "S&R (store) (page does not exist)", "Robinsons Supermarket", "Big C", "Central Retail Corporation", "Tesco Lotus", "Argos (retailer)", "Asda", "B&Q", "Currys", "Dfs (retailer)", "Halfords", "Matalan", "Morrisons", "Sainsbury's", "Marks & Spencer", "A.C. Moore", "Ace Hardware", "Albertsons", "Aldi", "Ames (department store)", "Ashley Furniture", "At Home (store)", "AutoZone", "Bass Pro Shops", "Bed Bath & Beyond", "Big Lots", "Books-A-Million", "Burlington (department store)", "Buy Buy Baby", "CarMax", "Child World", "Circuit City", "CompUSA", "The Container Store", "Cost Plus, Inc.", "Crate & Barrel", "Curacao (department store)", "CVS Pharmacy", "DSW, Inc.", "Dick's Sporting Goods", "Dollar General", "Dollar Tree", "Ascena Retail Group", "Eckerd Corporation", "Famous Footwear", "Five Below", "Fry's Electronics", "F.y.e.", "Gander Mountain", "Goodwill Industries", "Guitar Center", "Half Price Books", "Hastings Entertainment", "Hhgregg", "Hobby Lobby", "HomeGoods", "J. C. Penney", "Jo-Ann Stores", "Transformco", "Kohl's", "Kroger", "Food 4 Less & Foods Co.", "Fred Meyer", "Lechmere", "Linens n' Things", "Lowe's", "Macy's", "Marshalls", "Meijer", "Menards", "Michaels", "OfficeMax", "Old Navy", "Old Time Pottery", "Ollie's Bargain Outlet", "Remaindered books", "Party City", "Payless Shoe Source", "Petco", "Pier 1 Imports", "Publix", "Rite Aid", "Ross Dress for Less", "Safeway Inc.", "The Salvation Army", "Shopko", "ShopRite (United States)", "Spirit Halloween", "Sports Authority", "Stein Mart", "Crown Books", "SuperValu (United States)", "New Albertsons", "Save-A-Lot", "Thrift Drug", "TJ Maxx", "Kids \"R\" Us", "Trader Joe's", "Ulta Beauty", "Walgreens", "Walmart Neighborhood Market", "Whole Foods Market", "BJ's Wholesale Club", "Cymbal manufacturers"];
         this.PCHardDrive = ["SSD", "HDD", "3.5", "2.5", "SDSSA"];
-        
         this.CurrentOrder = {};
         this.SetTaxButlerCache();
         // var taxbultercache = localStorage.getItem(this.LocalStorageCacheKey);
@@ -39,39 +38,15 @@ class PaypalOrdersCrawler {
         //     console.log("Taxbutler filled");
         // }
 
-        this.CheckOrders = this.CheckOrders.bind(this);
+        this.CheckBoxForName = this.CheckBoxForName.bind(this);
         this.GetOrderType = this.GetOrderType.bind(this);
         this.CalculateOverallPayments = this.CalculateOverallPayments.bind(this);
         this.downloadCurrentJson = this.downloadCurrentJson.bind(this);
-        this.HandleSeeMoreButton = this.HandleSeeMoreButton.bind(this);
-        this.StartOrderCrawl = this.StartOrderCrawl.bind(this);
-        this.GetOrderInfoFromBoxes = this.GetOrderInfoFromBoxes.bind(this);
-        this.GetOrderIdText = this.GetOrderIdText.bind(this);
-        this.GetDateText = this.GetDateText.bind(this);
-        this.GetLinkText = this.GetLinkText.bind(this);
-        this.DownloadTaxButlerCache = this.DownloadTaxButlerCache.bind(this);
+        this.CheckForCurrentOrderId = this.CheckForCurrentOrderId.bind(this);
     }
-
-    // SetTaxButlerCache(){
-    //     var taxbultercache = localStorage.getItem(this.LocalStorageCacheKey);
-
-    //     if(taxbultercache == null){
-    //         console.log("Taxbutler not filled");f
-    //     this.OutUserDicts = {"Orders" :[]};
-    //     this.Preloaded = false;
-
-    //     }
-    //     else{
-    //         var obj = JSON.parse(taxbultercache);
-    //         console.log(obj);
-    //         // this.OutUserDicts = {"Orders" :[]};
-    //     this.OutUserDicts = obj;
-    //     this.Preloaded = true;
-    //         console.log("Taxbutler filled");
-    //     }
-    // }
-
-
+    
+    
+    
     SetTaxButlerCache(){
         // var taxbultercache = localStorage.getItem(this.LocalStorageCacheKey);
         // var taxbultercache = localStorage.getItem(this.LocalStorageCacheKey);
@@ -86,9 +61,9 @@ class PaypalOrdersCrawler {
         }
         else{
             try{
-            if(loadedData.taxbutlerpaypal.Orders != undefined){
+            if(loadedData.taxbutleramazon.Orders != undefined){
             // var obj = JSON.parse(taxbultercache);
-            var obj = loadedData.taxbutlerpaypal;
+            var obj = loadedData.taxbutleramazon;
             console.log(loadedData);
             console.log(obj);
             // this.OutUserDicts = {"Orders" :[]};
@@ -111,20 +86,9 @@ class PaypalOrdersCrawler {
         }
         }
     }
-
-
-
     SaveTaxButlerCache(){
         localStorage.setItem(this.LocalStorageCacheKey, JSON.stringify(this.OutUserDicts, null, 2));
-        var msg = { command: 'processdone', result: 'Paypal-PageProcess' , data:this.OutUserDicts};
-        chrome.runtime.sendMessage(msg);
-    }
-    DownloadTaxButlerCache(){
-        var a = document.createElement("a");
-        var file = new Blob([JSON.stringify(this.OutUserDicts, null, 2)], {type: 'text/plain'});
-        a.href = URL.createObjectURL(file);
-        a.download = 'taxbutlerpaypalOrders.json';
-        a.click();
+
     }
 
     downloadJson(content, fileName, contentType) {
@@ -182,6 +146,7 @@ class PaypalOrdersCrawler {
                 typee = "ProductionSubscription";
             }
         });
+        
         this.StreamingSubscription.forEach(word => {
             if(title.includes(word)){
                 typee = "StreamingSubscription";
@@ -262,143 +227,13 @@ class PaypalOrdersCrawler {
         }
 
     }
-    HandleSeeMoreButton(){
-        var LoadMoreButton = document.getElementsByClassName("js_loadMore")[0];
-        console.log("Checking for another Loading Button | Waiting 8 Seconds");
-        if(document.getElementsByClassName("js_loadMore").count != 0){
-            console.log("Found! another Loading Button  " );
+    CheckForCurrentOrderId(orderId){
 
-            try{
-            LoadMoreButton.click();
-            }catch{
-                console.log("No more Loading Buttons! " );
-
-                this.CheckOrders();
-            }
-
-
-            setTimeout(
-
-                this.HandleSeeMoreButton
-             
-    
-              , 8000);
-
-                
-
-            }else{
-            console.log("No more Loading Buttons! " );
-
-                this.CheckOrders( );
-            }
-
-
-
-    }
-
-    StartOrderCrawl(){
-        this.HandleSeeMoreButton();
-
-    }
-
-    GetHeaderText(box){
-        return box.querySelector('.counterparty-text').innerText;
-    }
-
-    GetLinkText(box){
-
-        try{
-            var payboxes = box.getElementsByClassName('halfColForPrint')[1];
-        var counterparty = payboxes.getElementsByTagName('a')[0].href
-
-            // var transactionid = payboxes[1].getElementsByClassName('ppvx_text--sm')[4].innerText;
-            return counterparty;
-            }catch{
-                return "http://Paypal.com";
-    
-    
-            }
-    }
-
-    GetDateText(box){
-        return box.querySelector('.relative-time').innerText;
-    }
-
-    GetPriceText(box){
-        try{
-        box.getElementsByClassName('netAmount')[0].innerText;
-        // var transactionid = payboxes[1].getElementsByClassName('ppvx_text--sm')[4].innerText;
-        return box.getElementsByClassName('netAmount')[0].innerText;
-        }catch{
-            return "0.00";
-
-
-        }
-    }
-
-    GetOrderIdText(box){
-        // var payboxes = this.TransactionBoxes[1].getElementsByClassName('halfColForPrint');
-        var payboxes = box.getElementsByClassName('halfColForPrint');
-        var transactionid = payboxes[0].getElementsByClassName('ppvx_text--caption')[payboxes[0].getElementsByClassName('ppvx_text--caption').length - 1].innerText;
-        return transactionid;
-    }
-
-    GetDateText(box){
-        return box.querySelector('.relative-time').innerText;
-    }
-
-    GetOrderInfoFromBoxes(){
-        for(var i = 0; i < this.TransactionBoxes.length - 1; i ++){
-            var box = this.TransactionBoxes[i];
-            if (this.Preloaded == true){
-
-
-                // this.OutUserDicts.Orders.forEach(orderr => {
-                //     if(orderr.OrderId == order.getElementsByTagName("bdi")[0].innerText ){
-                //         console.log("Order Exists");
-                //         this.SkipOrder = true;
-                //     }
-        
-                // });
-        
-                // if(this.CheckForCurrentOrderId( this.GetOrderIdText(box))){
-        
-                //     console.log("Order Exists");
-                //         // this.SkipOrder = true;
-                // }
-        
-        
-        
-        
-            }
-
-            if(this.SkipOrder == false){
-            var userdict = {"User":"User", "Price" : this.GetPriceText(box), "Items": [], "Date": this.GetDateText(box), "OrderId": this.GetOrderIdText(box) , "Category":"None" , "Vendor":"Paypal"};
-            // var userdict = {"User":"User", "Price" : this.GetPriceText(box), "Items": [], "Date": this.GetHeaderText(box), "OrderId": "" , "Category":"None"};
-            // if( this.GetOrderType(Link.innerText) !="None"){
-            //     // console.log("WOAH ITS NOT NONE ", this.GetOrderType(Link.innerText));
-            //     userdict.Category = this.GetOrderType(Link.innerText);
-            // }
-            var itemdict = {"Title" :this.GetHeaderText(box), "Link" : this.GetLinkText(box), "Category": this.GetOrderType(this.GetDateText(box))}
-            
-            userdict.Items.push(itemdict);
-    
-            // this.GetHeaderText(box);
-
-            this.OutUserDicts.Orders.push(userdict);
-            }
-
-        }
-        this.SaveTaxButlerCache();
- 
-    }
-    CheckForCurrentOrderId(){
-
-        var orderId = "12lk3jlkjfhkl";
+        // var orderId = "12lk3jlkjfhkl";
         for(var i = 0; i < this.OutUserDicts.Orders.length - 1; i ++){
             var order = this.OutUserDicts.Orders[i];
 
-            if(order.Vendor == "Paypal" ){
+            if(order.Vendor == "Amazon" ){
         for(var v = 0; v < order.Items.length - 1; v ++){
             var itemm =  order.Items[v];
             if(itemm.OrderId == orderId){
@@ -417,69 +252,134 @@ class PaypalOrdersCrawler {
 
 
     }
-    CheckOrders(){
-        console.log("Checking Orders");
-        
-        var transactionboxes = document.getElementsByClassName("transactionRow");
-        var objs = [];
-        for(var i = 0; i < transactionboxes.length - 1; i ++){
-        var box = transactionboxes[i];
-        if(!box.innerHTML.includes("dateBucketText")){
-        
-        
-            this.TransactionBoxes.push(box);
-            var linkedBlock = box.getElementsByClassName("linkedBlock")[0];
-            linkedBlock.click();
+    CheckBoxForName( name){
 
-         
+        var orders = document.getElementsByClassName("order");
+        for(var i = 0; i < orders.length - 1; i ++){
+            var order = orders[i];
+        // orders.forEach(order=>{
+            var boxes = order.getElementsByClassName("a-col-left");
 
-                
+            for(var b = 0; b < boxes.length - 1; b ++){
+                var box = boxes[b];
+            // boxes.forEach(box=>{
+    
 
-            }
+        var v =box.querySelectorAll(".trigger-text");
+        if (v[0] != undefined){
+        var pricebox =box.querySelectorAll(".a-span2");
+        var price =pricebox[0].querySelectorAll(".value");
+
+        var textt = v[0].innerText;
+        var pricetextt = price[0].innerText;
+        var DateArea =order.querySelectorAll(".a-span3");
+        var DateAreaText =DateArea[0].querySelectorAll(".value");
+
+        var userdict = {"User":textt, "Price" : pricetextt, "Items": [], "Date": DateAreaText[0].innerText, "OrderId": order.getElementsByTagName("bdi")[0].innerText , "Category":"None", "Vendor": "Amazon"};
+        // console.log(textt,name );
+        var Links =order.querySelectorAll(".a-link-normal");
+        if (this.Preloaded == true){
 
 
-           
-            objs.push(box);
+        // this.OutUserDicts.Orders.forEach(orderr => {
+        //     if(orderr.OrderId == order.getElementsByTagName("bdi")[0].innerText ){
+        //         console.log("Order Exists");
+        //         this.SkipOrder = true;
+        //     }
+
+        // });
+
+        if(this.CheckForCurrentOrderId(order.getElementsByTagName("bdi")[0].innerText)){
+
+            console.log("Order Exists");
+                // this.SkipOrder = true;
         }
-        console.log("waiting 10seconds");
-
-        setTimeout(
-
-            // Check objects
-            this.GetOrderInfoFromBoxes
-         
-
-          , 10000);
 
 
-                // var a = document.createElement("a");
-                // var file = new Blob([JSON.stringify(this.OutUserDicts, null, 2)], {type: 'text/plain'});
-                // a.href = URL.createObjectURL(file);
-                // a.download = 'Test.json';
-                // a.click();
-        // console.log(transactionboxes);
 
-   
+
+    }
+
+ 
+    if(this.SkipOrder == false){
+        Links.forEach(Link=>{
+    
+    if(Link.innerText != "" && Link.innerText != "Archive order" && Link.innerText != "View invoice" && Link.innerText != "View order details"  && Link.innerText != "View order details " ){
+        if( this.GetOrderType(Link.innerText) !="None"){
+            // console.log("WOAH ITS NOT NONE ", this.GetOrderType(Link.innerText));
+            userdict.Category = this.GetOrderType(Link.innerText);
+        }
+        var itemdict = {"Title" :Link.innerText, "Link" : Link.href, "Category": this.GetOrderType(Link.innerText)}
+        
+        userdict.Items.push(itemdict);
+
+    
+    }
+    });
+    if(name != ""){
+        if (textt == name){
+
+        this.chosenPieces.push(box);
+        this.chosenPrices.push(price);
+        this.OutUserDicts.Orders.push(userdict);
+
+    }
+    }else{
+
+        this.chosenPieces.push(box);
+        this.chosenPrices.push(price);
+        this.OutUserDicts.Orders.push(userdict);
+
+
+    }
+        }
+
+    }
+        }
+        // );
+
+    }
+    this.SaveTaxButlerCache();
+    // this.downloadJson(JSON.stringify(this.OutUserDicts, null, 2), 'AmazonOrders.json', 'text/plain');
+
+        console.log(this.OutUserDicts);
+    return(this.OutUserDicts);
 }
 }
 function done(data) {
-    var msg = { command: 'processdone', result: 'Paypal-PageProcess' , data:data};
+    var msg = { command: 'processdone', result: 'Amazon-PageProcess', data: data};
     chrome.runtime.sendMessage(msg);
 }
 
-
 function Main(){
-var PaypalOrdersCrawler_ = new PaypalOrdersCrawler();
-
-// Grab Single Person's orders on a page
-PaypalOrdersCrawler_.CheckOrders();
-// done(PaypalOrdersCrawler_.OutUserDicts);
-// PaypalOrdersCrawler_.StartOrderCrawl();
-
-}
+  
 
 console.log(previousdata);
 console.log(loadedData.taxbutleramazon);
-console.log("Checking Orders");
 
+
+try{
+var AmazonOrdersCrawler_ = new AmazonOrdersCrawler();
+// Grab Single Person's orders on a page
+done(AmazonOrdersCrawler_.CheckBoxForName(usernamee));
+
+
+}catch (err){
+    console.log("Failed 1");
+    console.log(err);
+    done(AmazonOrdersCrawler_.CheckBoxForName(usernamee));
+
+
+}
+
+
+// Grab all orders on a page
+// AmazonOrdersCrawler_.CheckBoxForName("");
+
+// Download Amazon Json
+// AmazonOrdersCrawler_.downloadCurrentJson( 'AmazonOrders.json', 'text/plain');
+// }
+}
+// localStorage.getItem("taxbutler-name")
+// console.log("dfsdffdfffffffffffff");
 Main();

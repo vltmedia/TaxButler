@@ -1,8 +1,8 @@
 {
   "version": "1.0",
   "manifest_version": 2,
-  "name": "React Boilerplate Extension",
-  "description": "Modern React boilerplate for Firefox and Chrome extensions.",
+  "name": "Tax Butler",
+  "description": "Scrape Amazon and Paypal for your orders to a JSON file",
   "content_scripts": [
     {
       "matches": [

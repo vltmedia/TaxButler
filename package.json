@@ -30,12 +30,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/kryptokinght/react-extension-boilerplate.git"
+    "url": "https://github.com/vltmedia/TaxButler.git"
   },
-  "author": "Minanshu Singh <minanshu.1998@gmail.com>",
+  "author": "Justin Jaro <justin@vltmedia.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kryptokinght/react-extension-boilerplate/issues"
+    "url": "https://github.com/vltmedia/TaxButler/issues"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
