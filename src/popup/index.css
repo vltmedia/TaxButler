@@ -89,3 +89,29 @@ span.psw {
     width: 100%;
   }
 }
+
+.StartButton {
+  background-color: #2196f324;
+  color: white;
+  padding: 14px 21px;
+  margin: 5px 0px;
+  border: solid #03a9f4 2px;
+  cursor: pointer;
+  /* width: 76%; */
+  text-transform: uppercase;
+  /* width: 93%; */
+  padding-top: 14px;
+  font-weight: bold;
+  position: relative;
+  text-align-last: center;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.NameMatch-Input{
+  margin-bottom: 10px;
+}
+.NameMatch-Label{
+  margin-bottom: 3px;
+}

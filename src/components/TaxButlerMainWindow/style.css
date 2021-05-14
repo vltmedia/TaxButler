@@ -1,0 +1,30 @@
+.ButtonBar-container{
+
+    /* background-color: antiquewhite; */
+    display: flex;
+    justify-content: center;
+}
+
+ .ButtonBar-Button-Download{
+
+    width: 30px;
+
+
+}
+
+.ButtonBar-Button-Home{
+
+    width: 48px;
+
+} 
+.ButtonBar-Button-Help{
+
+    width: 42px;
+
+} 
+.ButtonBar-Button{
+
+    color: #fafafa;
+    padding-right: 29px;
+    cursor: pointer;
+}

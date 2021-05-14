@@ -322,7 +322,7 @@ browser.runtime.onMessage.addListener(function(message) {
       browser.storage.local.set({ taxbutler: message.data });
       browser.storage.local.set({ taxbutleramazon: message.data });
       console.log('Finished Amazon-PageProcess!');
-      SetCategories(message.data, "Amazon");
+      SetCategories(message.data, 'Amazon');
       // setTimeout(() => {
       //   console.log('Launching ProductPageHandler!');
       //   // ProductPageHandler();
@@ -332,7 +332,7 @@ browser.runtime.onMessage.addListener(function(message) {
     if (message.result == 'Paypal-PageProcess') {
       // browser.storage.local.set({ taxbutler: message.data });
       // browser.storage.local.set({ taxbutlerpaypal: message.data });
-      SetCategories(message.data, "Paypal");
+      SetCategories(message.data, 'Paypal');
       console.log('Finished Paypal-PageProcess!');
 
       // setTimeout(() => {
@@ -365,82 +365,89 @@ browser.runtime.onMessage.addListener(function(message) {
   }
 });
 
-const PCPart = ["Windows", "USB", "Mac", "DRAM", "DDR4", "Noctua", "Fan", "Processor", "Motherboard", "LGA1", "HDMI", "Raspberry", "Breadboard", "Cable", "Arduino", "Threaded", "Brass", "Solder", "OLED"
-, "Smooth-On", "LED", "Battery", "Fastener", "Magnet", "Electric wire", "Soldering", "5V", "12V","3V","3.3V", "3D Printer", "Printer", "M5", "M6", "RGB", "Mouse", "M6", "trash"];
-const HomeOffice = ["Home Office", "Office", "Solder", "Pen", "Light Bulb", "Outlet", "Paper", "A4", "Bento", "Bowls", "Glasses"];
-const LivingExpenses = ["Olive Oil", "Forehad", "Nails", "Plant", "Goldfish", "Cofee", "AT&T", "Home Depot", "Magic Candle Company"];
-const VideoGames = ["Steam", "Xbox", "PS", "Nintendo", "Sony", "Nintendo Switch", "Valve", "Electronic Arts", "Sony Interactive", "Facebook", "Humble Bundle"];
-const ProductionAsset = ["Envato", "Turbo", "PS", "Nintendo", "Sony", "Nintendo Switch", "Valve", "CG Cookie", "DTS", "Gumroad", "DAZ", "Google" , "Ableton AG", "VB-Audio Software"];
-const ProductionSubscription = ["Otoy", "Unity", "Epic", "Nintendo", "Sony", "Nintendo Switch", "Resilio", "Derivative", "Simplify", "Adobe", "Rebrandly", "WakaTime", "Paddle.com" ,"GitHub", "A2 Hosting", "Pluralsight"];
-const PCHardDrive = ["SSD", "HDD", "3.5", "2.5", "SDSSA"];
 
-function SetCategories(data, typee){
-    for(var i =0 ; i < data.Orders.length - 1; i++){
-      var order = data.Orders[i];
-      var newcategory = data.Orders[i].Category;
 
-      for(var item =0 ; item < data.Orders.length - 1; item++){
-        var ItemSelected = data.Orders[i].Items[item];
-        try{
-          newcategory = GetOrderType(ItemSelected.Title);
-          data.Orders[i].Category = newcategory;
+function SetCategories(data, typee) {
+  for (var i = 0; i < data.Orders.length - 1; i++) {
+    var newcategory = data.Orders[i].Category;
+
+    for (var item = 0; item < data.Orders.length - 1; item++) {
+      var ItemSelected = data.Orders[i].Items[item];
+      try {
+        newcategory = GetOrderType(ItemSelected.Title);
+        data.Orders[i].Category = newcategory;
 
         // console.log(newcategory);
-        }catch{
-
-        }
-  
-  
-      }
-    
-
+      } catch {}
     }
-    // browser.storage.local.set({ taxbutler: message.data });
-    if(typee == "Paypal"){
-    browser.storage.local.set({ taxbutlerpaypal: data }).then(()=>{console.log("Updated Paypal Data!"); alert("Updated!");}).catch(err=>{console.log("Failed!", err);alert("Failed!", err);});
-    }else{
-
-    browser.storage.local.set({ taxbutleramazon: data }).then(()=>{console.log("Updated Amazon Data!"); alert("Updated!");}).catch(err=>{console.log("Failed!", err);alert("Failed!", err);});
-
-    }
-
+  }
+  // browser.storage.local.set({ taxbutler: message.data });
+  if (typee == 'Paypal') {
+    browser.storage.local
+      .set({ taxbutlerpaypal: data })
+      .then(() => {
+        console.log('Updated Paypal Data!');
+        alert('Updated!');
+      })
+      .catch(err => {
+        console.log('Failed!', err);
+        alert('Failed!', err);
+      });
+  } else {
+    browser.storage.local
+      .set({ taxbutleramazon: data })
+      .then(() => {
+        console.log('Updated Amazon Data!');
+        alert('Updated!');
+      })
+      .catch(err => {
+        console.log('Failed!', err);
+        alert('Failed!', err);
+      });
+  }
 }
-function GetOrderType(title){
-  var typee = "Undefined";
+function GetOrderType(title) {
+
+  var typee = 'Undefined';
   this.PCPart.forEach(word => {
-      if(title.includes(word)){
-          typee = "PCPart";
-      }
+    if (title.includes(word)) {
+      typee = 'PCPart';
+    }
   });
   this.HomeOffice.forEach(word => {
-      if(title.includes(word)){
-          typee = "HomeOffice";
-      }
+    if (title.includes(word)) {
+      typee = 'HomeOffice';
+    }
   });
   this.PCHardDrive.forEach(word => {
-      if(title.includes(word)){
-          typee = "PCHardDrive";
-      }
+    if (title.includes(word)) {
+      typee = 'PCHardDrive';
+    }
   });
   this.LivingExpenses.forEach(word => {
-      if(title.includes(word)){
-          typee = "LivingExpenses";
-      }
+    if (title.includes(word)) {
+      typee = 'LivingExpenses';
+    }
   });
   this.VideoGames.forEach(word => {
-      if(title.includes(word)){
-          typee = "VideoGames";
-      }
+    if (title.includes(word)) {
+      typee = 'VideoGames';
+    }
   });
   this.ProductionAsset.forEach(word => {
-      if(title.includes(word)){
-          typee = "ProductionAsset";
-      }
+    if (title.includes(word)) {
+      typee = 'ProductionAsset';
+    }
+  });
+  this.ConvenienceStore.forEach(word => {
+    if (title.includes(word)) {
+      typee = 'ConvenienceStore';
+    }
   });
   this.ProductionSubscription.forEach(word => {
-      if(title.includes(word)){
-          typee = "ProductionSubscription";
-      }
+    if (title.includes(word)) {
+      typee = 'ProductionSubscription';
+    }
   });
   return typee;
 }

@@ -25,7 +25,7 @@ body{
     top: 50%;
     border-radius: 6px;
     transform: translateY(-50%);
-    overflow: scroll;
+    overflow: auto;
     
     
   
@@ -39,4 +39,14 @@ body{
     display: flex;
     place-content: center;
   
+}
+.TextArea-Container {
+
+
+    position: fixed;
+    top: 0%;
+
+}
+.TextArea-Header{
+    margin-bottom: -10px;
 }
