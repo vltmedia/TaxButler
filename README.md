@@ -1,7 +1,7 @@
 # Tax Butler - Chrome Extension
 
 A Chrome Extension to help you download your Amazon and Paypal orders per page to a combined JSON or CSV file.
-
+![](https://github.com/vltmedia/TaxButler/blob/master/src/img/icon.png?raw=true)
 # Installation:
 1. Download a release from Github.
 2. Unzip it somewhere on your pc.
