@@ -2,6 +2,12 @@
 
 A Chrome Extension to help you download your Amazon and Paypal orders per page to a combined JSON or CSV file.
 
+# Installation:
+1. Download a release from Github.
+2. Unzip it somewhere on your pc.
+3. [Follow These Instructions from there](https://ui.vision/howto/install-chrome-extension-from-file) to install the unpacked extension.
+
+
 # Usage:
 ## Amazon
 1. Go to an Order page you want to take a snaphot of. 
@@ -17,8 +23,8 @@ A Chrome Extension to help you download your Amazon and Paypal orders per page t
 5. Wait. Depending on how many Orders you're trying to log, this may take a bit since the Butler will need to open each Order card and wait till loaded.
 6. Click the `Update Catagories` button to make sure your Catagories per Order are nice and cleaned up.
 
-## Exporting To JSON
-Click any of the Download Buttons to download a JSON file containg  your Orders in the format of:
+## Exporting To JSON & CSV
+Click any of the Download Buttons to download JSON & CSV files containg your Orders in the format of:
 
 ```json
 {

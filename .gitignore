@@ -3,5 +3,7 @@ try.js
 old-extension
 dist
 extension
+TaxButlerextension
 dev
 .vscode
+*.zip

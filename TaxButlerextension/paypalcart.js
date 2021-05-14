@@ -337,8 +337,9 @@ class PaypalOrdersCrawler {
     }
 
     GetOrderIdText(box){
-        var payboxes = this.TransactionBoxes[1].getElementsByClassName('halfColForPrint');
-        var transactionid = payboxes[0].getElementsByClassName('ppvx_text--sm')[4].innerText;
+        // var payboxes = this.TransactionBoxes[1].getElementsByClassName('halfColForPrint');
+        var payboxes = box.getElementsByClassName('halfColForPrint');
+        var transactionid = payboxes[0].getElementsByClassName('ppvx_text--caption')[payboxes[0].getElementsByClassName('ppvx_text--caption').length - 1].innerText;
         return transactionid;
     }
 
@@ -360,11 +361,11 @@ class PaypalOrdersCrawler {
         
                 // });
         
-                if(this.CheckForCurrentOrderId( this.GetOrderIdText(box))){
+                // if(this.CheckForCurrentOrderId( this.GetOrderIdText(box))){
         
-                    console.log("Order Exists");
-                        // this.SkipOrder = true;
-                }
+                //     console.log("Order Exists");
+                //         // this.SkipOrder = true;
+                // }
         
         
         
