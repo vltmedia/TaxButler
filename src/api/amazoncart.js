@@ -1,6 +1,6 @@
 
 
-class AmazonOrdersCrawler {
+var cAmazonOrdersCrawler = class AmazonOrdersCrawler {
     
     constructor(props){
         // this.LocalStorageCacheKey = this.LocalStorageCacheKey;
@@ -346,28 +346,58 @@ class AmazonOrdersCrawler {
     return(this.OutUserDicts);
 }
 }
-function done(data) {
-    var msg = { command: 'processdone', result: 'Amazon-PageProcess', data: data};
+function ClickNextButton(){
+    var pagebar = document.getElementsByClassName('pagination-full')[0].getElementsByClassName('a-last')[0].getElementsByTagName('a')[0];
+    pagebar.click();
+}
+function SearchNextButton(){
+    var pagebar = document.getElementsByClassName('pagination-full')[0].getElementsByClassName('a-last')[0].getElementsByTagName('a')[0];
+    try{
+    if (pagebar.length != 0){
+    return true;
+    }else{
+    return false;
+
+    }}catch{
+    return false;
+
+    }
+}
+function done(data, nametomatch) {
+    if(SearchNextButton()){
+    var msg = { command: 'processcontinue', result: 'Amazon-PageProcess', data: data, 'NameToMatch': nametomatch, Process:'Amazon'};
     chrome.runtime.sendMessage(msg);
+    ClickNextButton();
+    }else{
+        var msg = { command: 'processdone', result: 'Amazon-PageProcess', data: data, 'NameToMatch': nametomatch, Process:'Amazon'};
+        chrome.runtime.sendMessage(msg);
+    }
 }
 
 function Main(){
   
 
+console.log(usernamee);
 console.log(previousdata);
 console.log(loadedData.taxbutleramazon);
 
-
 try{
-var AmazonOrdersCrawler_ = new AmazonOrdersCrawler();
-// Grab Single Person's orders on a page
-done(AmazonOrdersCrawler_.CheckBoxForName(usernamee));
+if (!window.AmazonOrdersCrawler_){
 
+var AmazonOrdersCrawler_ = new cAmazonOrdersCrawler();
+// Grab Single Person's orders on a page
+done(AmazonOrdersCrawler_.CheckBoxForName(usernamee), usernamee);
+}else{
+
+    AmazonOrdersCrawler_ = new cAmazonOrdersCrawler();
+// Grab Single Person's orders on a page
+done(AmazonOrdersCrawler_.CheckBoxForName(usernamee), usernamee);
+}
 
 }catch (err){
     console.log("Failed 1");
     console.log(err);
-    done(AmazonOrdersCrawler_.CheckBoxForName(usernamee));
+    done(AmazonOrdersCrawler_.CheckBoxForName(usernamee), usernamee);
 
 
 }

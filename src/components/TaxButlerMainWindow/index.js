@@ -19,10 +19,14 @@ class TaxButlerMainWindow extends React.Component {
     };
     this.ProcessAmazon = this.ProcessAmazon.bind(this);
     this.ProcessPaypal = this.ProcessPaypal.bind(this);
+    this.SetName = this.SetName.bind(this);
     this.SetEmail = this.SetEmail.bind(this);
     this.SetPassword = this.SetPassword.bind(this);
+    this.GetTotalPrice = this.GetTotalPrice.bind(this);
     this.ClearCache = this.ClearCache.bind(this);
     this.DownloadAmazonJson = this.DownloadAmazonJson.bind(this);
+    this.GetAllPrices = this.GetAllPrices.bind(this);
+    this.DeleteDuplicates = this.DeleteDuplicates.bind(this);
     this.DownloadPaypalJson = this.DownloadPaypalJson.bind(this);
     this.DownloadCombinedJson = this.DownloadCombinedJson.bind(this);
     this.GetOrderType = this.GetOrderType.bind(this);
@@ -445,9 +449,14 @@ class TaxButlerMainWindow extends React.Component {
       'Nails',
       'Plant',
       'Goldfish',
+      'FamiliarFragrances',
       'Cofee',
       'AT&T',
+      'AT&T TV NOW',
+      'BroadwaySoaps',
       'Home Depot',
+      'CSfootprints',
+      'DOMINO\'S 3535',
       'Magic Candle Company'
     ];
     this.VideoGames = [
@@ -457,7 +466,7 @@ class TaxButlerMainWindow extends React.Component {
       'Nintendo',
       'Sony',
       'Nintendo Switch',
-      'Valve',
+      'Valve Corp.',
       'Electronic Arts',
       'Sony Interactive',
       'Facebook',
@@ -1168,23 +1177,29 @@ class TaxButlerMainWindow extends React.Component {
     ];
     this.ProductionAsset = [
       'Envato',
+      'Turbo Squid, Inc.',
       'Turbo',
       'PS',
       'Nintendo',
       'Sony',
       'Nintendo Switch',
+      'Unity Technologies ApS',
       'Valve',
       'CG Cookie',
       'DTS',
       'Gumroad',
+      'Bitstream Inc.',
       'DAZ',
+      'Bandcamp, Inc.',
       'Google',
       'Ableton AG',
       'VB-Audio Software'
     ];
     this.ProductionSubscription = [
       'Otoy',
-      'Unity',
+      'Otoy NZ Ltd',
+      'Otoy NZ Ltd',
+      'Unity Technologies ApS',
       'Epic',
       'Nintendo',
       'Sony',
@@ -1193,13 +1208,21 @@ class TaxButlerMainWindow extends React.Component {
       'Derivative',
       'Simplify',
       'Adobe',
+      'Adobe, Inc.',
+      'Adobe- Inc.',
       'Rebrandly',
       'WakaTime',
       'Paddle.com',
       'GitHub',
       'A2 Hosting',
-      'Pluralsight'
+      'Pluralsight',
+      'Ugritone',
+      '2Checkout',
+      'DigitalOcean',
+      'Allegorithmic',
+      'Namecheap, Inc'
     ];
+    this.BankWithdrawl = ['BANK OF AMERICA, N.A.'];
     this.StreamingSubscription = [
       'Netflix',
       'Amazon Prime Video',
@@ -1855,11 +1878,12 @@ class TaxButlerMainWindow extends React.Component {
   CreateCSV(orders) {
     var headers = 'Date,Items,Category,OrderId,Price,User,Vendor,Links\n';
     var entries = [];
-    for (var i = 0; i < orders.length - 1; i++) {
-      var order = orders[i];
+    var Orders = orders.Orders;
+    for (var i = 0; i < Orders.length - 1; i++) {
+      var order = Orders[i];
       var itemnames = [];
       var itemLinks = [];
-      console.log('order', order.Items);
+      // console.log('order', order.Items);
       for (var item = 0; item < order.Items.length; item++) {
         console.log(order.Items[item]);
         var length = 100;
@@ -1872,19 +1896,65 @@ class TaxButlerMainWindow extends React.Component {
         itemnames.push(cleanedtitle.replace(',', '-'));
         itemLinks.push(Linkk);
       }
-      var entry = [
-        order.Date.replace(',', '-'),
-        itemnames.join(' | ').replace(',', '-'),
-        order.Category.replace(',', '-'),
-        order.OrderId.replace(',', '-'),
-        order.Price.replace(',', '-'),
-        order.User.replace(',', '-'),
-        order.Vendor.replace(',', '-'),
-        itemLinks.join(' | ').replace(',', '-')
-      ];
+      // console.log('entry order ', order);
+      // console.log('entry order Type ', this.GetOrderType(order.Items[0].Title));
+      order.Category = this.GetOrderType(order.Items[0].Title);
+      if (order.Category == 'None') {
+        console.log('entry order None', order);
+      }
+      if (order.Category == 'Undefined') {
+        console.log('entry order Undefined', order);
+      }
+      // console.log('entry order Date', order.Date.replace(',', '-'));
+      // console.log('entry order Category', order.Category.replace(',', '-'));
+      // console.log('entry order Price', order.Price.replace(',', '-'));
+      // console.log('entry order User ', order.User.replace(',', '-'));
+      // console.log('entry order Vendor ', order.Vendor.replace(',', '-'));
+      // console.log('itemnames ', itemnames.join(' | ').replace(',', '-'));
+      // console.log('itemLinks ', itemLinks.join(' | ').replace(',', '-'));
+
+      try {
+        var entry = [
+          order.Date.replace(',', '-'),
+          itemnames.join(' | ').replace(',', '-'),
+          order.Category.replace(',', '-'),
+          order.OrderId.replace(',', '-'),
+          order.Price.replace(',', '-'),
+          order.User.replace(',', '-'),
+          order.Vendor.replace(',', '-'),
+          itemLinks.join(' | ').replace(',', '-')
+        ];
+      } catch (e) {
+        console.log(e);
+      }
+
       var entrystring = entry.join(',');
       entries.push(entrystring);
     }
+    entries.push('BankWithdrawl Price,' + orders.BankWithdrawlPrice.toString());
+    entries.push(
+      'ConvenienceStore Price,' + orders.ConvenienceStorePrice.toString()
+    );
+    entries.push('HomeOffice Price,' + orders.HomeOfficePrice.toString());
+    entries.push(
+      'LivingExpenses Price,' + orders.LivingExpensesPrice.toString()
+    );
+    entries.push('PCHardDrive Price,' + orders.PCHardDrivePrice.toString());
+    entries.push('PCPart Price,' + orders.PCPartPrice.toString());
+    entries.push(
+      'ProductionAsset Price,' + orders.ProductionAssetPrice.toString()
+    );
+    entries.push(
+      'ProductionSubscription Price,' +
+        orders.ProductionSubscriptionPrice.toString()
+    );
+    entries.push(
+      'StreamingSubscription Price,' +
+        orders.StreamingSubscriptionPrice.toString()
+    );
+    entries.push('SuperStore Price,' + orders.SuperStorePrice.toString());
+    entries.push('VideoGames Price,' + orders.VideoGamesPrice.toString());
+    entries.push('Total Price,' + orders.TotalPrice.toString());
     var entrystringout = entries.join('\n');
     headers += entrystringout;
     return headers;
@@ -1896,6 +1966,9 @@ class TaxButlerMainWindow extends React.Component {
 
       browser.storage.local.get('taxbutlerpaypal').then(resultt => {
         try {
+          resultt.taxbutlerpaypal.Orders = this.DeleteDuplicates(
+            resultt.taxbutlerpaypal.Orders
+          );
           this.setState({
             taxbutlerPaypal: resultt,
             paypalcount: resultt.taxbutlerpaypal.Orders.length
@@ -1908,6 +1981,9 @@ class TaxButlerMainWindow extends React.Component {
 
         browser.storage.local.get('taxbutleramazon').then(amazon => {
           try {
+            amazon.taxbutleramazon.Orders = this.DeleteDuplicates(
+              amazon.taxbutleramazon.Orders
+            );
             this.setState({
               taxbutlerAmazon: amazon,
               amazoncount: amazon.taxbutleramazon.Orders.length
@@ -1965,6 +2041,11 @@ class TaxButlerMainWindow extends React.Component {
         typee = 'StreamingSubscription';
       }
     });
+    this.BankWithdrawl.forEach(word => {
+      if (title.includes(word)) {
+        typee = 'BankWithdrawl';
+      }
+    });
     this.ConvenienceStore.forEach(word => {
       if (title.includes(word)) {
         typee = 'ConvenienceStore';
@@ -1973,6 +2054,11 @@ class TaxButlerMainWindow extends React.Component {
     this.SuperStore.forEach(word => {
       if (title.includes(word)) {
         typee = 'SuperStore';
+      }
+    });
+    this.ProductionSubscription.forEach(word => {
+      if (title.includes(word)) {
+        typee = 'ProductionSubscription';
       }
     });
     return typee;
@@ -2035,12 +2121,35 @@ class TaxButlerMainWindow extends React.Component {
   DownloadAmazonJson() {
     browser.storage.local.get('taxbutleramazon').then(amazon => {
       this.setState({ taxbutlerAmazon: amazon });
-      var csvfile = this.CreateCSV(amazon.taxbutleramazon.Orders);
+      for (var i = 0; i < amazon.taxbutleramazon.Orders.length - 1; i++) {
+        var order = amazon.taxbutleramazon.Orders[i];
+        var newcategory = order.Category;
+
+        for (
+          var item = 0;
+          item < amazon.taxbutleramazon.Orders.length - 1;
+          item++
+        ) {
+          var ItemSelected = order.Items[item];
+          try {
+            newcategory = this.GetOrderType(ItemSelected.Title);
+            order.Category = newcategory;
+
+            // console.log(newcategory);
+          } catch {}
+        }
+      }
+      amazon.taxbutleramazon.Orders = this.DeleteDuplicates(
+        amazon.taxbutleramazon.Orders
+      );
+
+      var finaldict = this.GetAllPrices(amazon.taxbutleramazon);
+      var csvfile = this.CreateCSV(finaldict);
       console.log(amazon);
       // console.log(JSON.parse(result));
 
       var a = document.createElement('a');
-      var file = new Blob([JSON.stringify(amazon.taxbutleramazon, null, 2)], {
+      var file = new Blob([JSON.stringify(finaldict, null, 2)], {
         type: 'text/plain'
       });
       a.href = URL.createObjectURL(file);
@@ -2057,32 +2166,121 @@ class TaxButlerMainWindow extends React.Component {
     });
   }
 
+  GetAllPrices(dict) {
+    dict.PCPartPrice = this.GetTotalPrice(dict.Orders, 'PCPart');
+    dict.HomeOfficePrice = this.GetTotalPrice(dict.Orders, 'HomeOffice');
+    dict.LivingExpensesPrice = this.GetTotalPrice(
+      dict.Orders,
+      'LivingExpenses'
+    );
+    dict.VideoGamesPrice = this.GetTotalPrice(dict.Orders, 'VideoGames');
+    dict.VideoGamesPrice = this.GetTotalPrice(dict.Orders, 'VideoGames');
+    dict.ProductionAssetPrice = this.GetTotalPrice(
+      dict.Orders,
+      'ProductionAsset'
+    );
+    dict.ProductionSubscriptionPrice = this.GetTotalPrice(
+      dict.Orders,
+      'ProductionSubscription'
+    );
+    dict.BankWithdrawlPrice = this.GetTotalPrice(dict.Orders, 'BankWithdrawl');
+    dict.StreamingSubscriptionPrice = this.GetTotalPrice(
+      dict.Orders,
+      'StreamingSubscription'
+    );
+    dict.ConvenienceStorePrice = this.GetTotalPrice(
+      dict.Orders,
+      'ConvenienceStore'
+    );
+    dict.SuperStorePrice = this.GetTotalPrice(dict.Orders, 'SuperStore');
+    dict.PCHardDrivePrice = this.GetTotalPrice(dict.Orders, 'PCHardDrive');
+    var totalprice =
+      dict.PCHardDrivePrice +
+      dict.ProductionSubscriptionPrice +
+      dict.HomeOfficePrice +
+      dict.PCPartPrice +
+      dict.ProductionAssetPrice +
+      dict.LivingExpensesPrice +
+      dict.VideoGamesPrice +
+      dict.SuperStorePrice +
+      dict.ConvenienceStorePrice +
+      dict.BankWithdrawlPrice +
+      dict.StreamingSubscriptionPrice;
+    var cleanedprice = Math.round(100 * totalprice) / 100;
+    dict.TotalPrice = cleanedprice;
+
+    return dict;
+  }
+  GetTotalPrice(orders, keyy) {
+    var filteredorders = orders.filter(orderr => {
+      return orderr.Category == keyy;
+    });
+    var currentprice = 0;
+    for (
+      var filteredorder = 0;
+      filteredorder < filteredorders.length - 1;
+      filteredorder++
+    ) {
+      var pattern = /[^0-9.-]+/g;
+      var pricee = parseFloat(
+        filteredorders[filteredorder].Price.replace(pattern, '')
+      );
+      currentprice += pricee;
+    }
+    var cleanedprice = Math.round(100 * currentprice) / 100;
+    return cleanedprice;
+  }
+
+  DeleteDuplicates(Orders) {
+    var outorders = [];
+    for (var i = 0; i < Orders.length - 1; i++) {
+      var order = Orders[i];
+      var countt = 0;
+      for (var ii = 0; ii < Orders.length - 1; ii++) {
+        var orderd = Orders[ii];
+        if (orderd.OrderId == order.OrderId) {
+          if (countt == 0) {
+            outorders.push(order);
+          } else {
+            console.log('Count 2 ', order);
+          }
+          countt += 1;
+        }
+      }
+     
+    }
+    return outorders;
+  }
+
   DownloadPaypalJson() {
     browser.storage.local.get('taxbutlerpaypal').then(paypal => {
       this.setState({ taxbutlerPaypal: paypal });
-      // for(var i =0 ; i < paypal.taxbutlerpaypal.Orders.length - 1; i++){
-      //   var order = paypal.taxbutlerpaypal.Orders[i];
-      //   var newcategory = order.Category;
+      for (var i = 0; i < paypal.taxbutlerpaypal.Orders.length - 1; i++) {
+        var order = paypal.taxbutlerpaypal.Orders[i];
+        var newcategory = order.Category;
 
-      //   for(var item =0 ; item < paypal.taxbutlerpaypal.Orders.length - 1; item++){
-      //     var ItemSelected = order.Items[item];
-      //     try{
-      //       newcategory = this.GetOrderType(ItemSelected.Title);
-      //       order.Category = newcategory;
+        for (
+          var item = 0;
+          item < paypal.taxbutlerpaypal.Orders.length - 1;
+          item++
+        ) {
+          var ItemSelected = order.Items[item];
+          try {
+            newcategory = this.GetOrderType(ItemSelected.Title);
+            order.Category = newcategory;
 
-      //     // console.log(newcategory);
-      //     }catch{
-
-      //     }
-
-      //   }
-
-      // }
-      var csvfile = this.CreateCSV(paypal.taxbutlerpaypal.Orders);
-      console.log(paypal);
-      // console.log(JSON.parse(result));
+            // console.log(newcategory);
+          } catch {}
+        }
+      }
+      paypal.taxbutlerpaypal.Orders = this.DeleteDuplicates(
+        paypal.taxbutlerpaypal.Orders
+      );
+      var finaldict = this.GetAllPrices(paypal.taxbutlerpaypal);
+      // console.log(paypal.taxbutlerpaypal);
+      var csvfile = this.CreateCSV(finaldict);
       var a = document.createElement('a');
-      var file = new Blob([JSON.stringify(paypal.taxbutlerpaypal, null, 2)], {
+      var file = new Blob([JSON.stringify(finaldict, null, 2)], {
         type: 'text/plain'
       });
       a.href = URL.createObjectURL(file);
@@ -2097,6 +2295,7 @@ class TaxButlerMainWindow extends React.Component {
       csvv.download = 'TaxButler-PaypalOrders.csv';
       csvv.click();
     });
+    // var ProductionSubPrice = this.GetTotalPrice(paypal.taxbutlerpaypal.Orders, 'ProductionSubscription');
   }
 
   DownloadCombinedJson() {
@@ -2112,7 +2311,26 @@ class TaxButlerMainWindow extends React.Component {
         this.state.taxbutlerPaypal.taxbutlerpaypal.Orders[i]
       );
     }
-    var csvfile = this.CreateCSV(OutOrders.Orders);
+
+    for (var ii = 0; i < OutOrders.length - 1; ii++) {
+      var order = OutOrders[ii];
+      var newcategory = order.Category;
+
+      for (var item = 0; item < OutOrders.length - 1; item++) {
+        var ItemSelected = order.Items[item];
+        try {
+          newcategory = this.GetOrderType(ItemSelected.Title);
+          order.Category = newcategory;
+
+          // console.log(newcategory);
+        } catch {}
+      }
+    }
+    OutOrders.Orders = this.DeleteDuplicates(OutOrders.Orders);
+
+    var finaldict = this.GetAllPrices(OutOrders);
+    // console.log(paypal.taxbutlerpaypal);
+    var csvfile = this.CreateCSV(finaldict);
 
     // console.log(JSON.parse(result));
     var a = document.createElement('a');
@@ -2173,6 +2391,14 @@ class TaxButlerMainWindow extends React.Component {
     // browser.runtime.sendMessage({data:'test 123'});
     // this.props.LoginClick({data: {email :this.state.email, password:this.state.password }});
   }
+  SetName(namee) {
+    // browser.runtime.sendMessage({data:'test 123'});
+    console.log('Name', namee);
+    this.setState(namee);
+
+    // browser.runtime.sendMessage({data:'test 123'});
+    // this.props.LoginClick({data: {email :this.state.email, password:this.state.password }});
+  }
   ProcessPaypal() {
     // browser.runtime.sendMessage({data:'test 123'});
     browser.storage.local
@@ -2215,6 +2441,8 @@ class TaxButlerMainWindow extends React.Component {
         <ProcessPage
           ProcessAmazon={this.ProcessAmazon.bind(this)}
           ProcessPaypal={this.ProcessPaypal.bind(this)}
+          ClearCache={this.ClearCache.bind(this)}
+          SetName={this.SetName.bind(this)}
           SetCategoriesRegular={this.SetCategoriesRegular.bind(this)}
           amazoncount={this.state.amazoncount}
           paypalcount={this.state.paypalcount}

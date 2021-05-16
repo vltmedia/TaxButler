@@ -9,7 +9,7 @@ class ProcessPage extends React.Component {
           <h2 className = "NameMatch-Label" >Amazon Payee To Match:</h2>
           <input
             className = "NameMatch-Input"
-            onChange={e => this.setState({ NameToFind: e.target.value })}
+            onChange={e => this.props.SetName({ NameToFind: e.target.value })}
             placeholder="John Smith"
           />
           <div className="TextArea-Container">

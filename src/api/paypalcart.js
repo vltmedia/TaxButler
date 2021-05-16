@@ -339,7 +339,18 @@ class PaypalOrdersCrawler {
     GetOrderIdText(box){
         // var payboxes = this.TransactionBoxes[1].getElementsByClassName('halfColForPrint');
         var payboxes = box.getElementsByClassName('halfColForPrint');
-        var transactionid = payboxes[0].getElementsByClassName('ppvx_text--caption')[payboxes[0].getElementsByClassName('ppvx_text--caption').length - 1].innerText;
+        console.log('payboxes 1 ', payboxes);
+
+        try{
+        var payboxe = payboxes[0].getElementsByClassName('ppvx_text--caption');
+        var transactionid = payboxe[payboxes[0].getElementsByClassName('ppvx_text--caption').length - 1].innerText;
+        console.log('transactionid ', transactionid);
+        }catch{
+            console.log('box FAIL |  ',box);
+            console.log('payboxes FAIL |  ',payboxes);
+        }
+       
+
         return transactionid;
     }
 
@@ -441,7 +452,7 @@ class PaypalOrdersCrawler {
            
             objs.push(box);
         }
-        console.log("waiting 10seconds");
+        console.log("waiting 15 seconds");
 
         setTimeout(
 
