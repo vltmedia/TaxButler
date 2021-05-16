@@ -2346,7 +2346,7 @@ class TaxButlerMainWindow extends React.Component {
       type: 'text/plain'
     });
     csvv.href = URL.createObjectURL(filecsv);
-    csvv.download = 'TaxButler-PaypalOrders.csv';
+    csvv.download = 'TaxButler-CombinedOrders.csv';
     csvv.click();
   }
   SetPassword(e) {
